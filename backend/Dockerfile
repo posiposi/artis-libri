@@ -13,4 +13,3 @@ RUN go get -u gorm.io/gorm
 RUN echo 'alias prisma="go run github.com/steebchen/prisma-client-go"' >> ~/.bashrc
 
 COPY . /go/src
-COPY .env /go/src/.env
