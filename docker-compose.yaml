@@ -52,7 +52,7 @@ services:
     volumes:
       - ./openapi/src/openapi.yaml:/openapi/openapi.yaml
     ports:
-      - "8010:8080"
+      - "8010:8010"
 
   prism:
     image: stoplight/prism:4
