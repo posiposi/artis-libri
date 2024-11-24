@@ -9,7 +9,6 @@ datasource db {
 
 model User {
   id         String    @id @db.Char(36)
-  name       String
   email      String
   password   String
   created_at DateTime  @default(now())
