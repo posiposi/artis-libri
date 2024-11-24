@@ -5,10 +5,19 @@ import (
 	"github.com/posiposi/project/backend/controller"
 )
 
-func NewRouter(uc controller.IUserController) *echo.Echo {
+func NewRouter(uc controller.IUserController, bc controller.IBookController) *echo.Echo {
 	e := echo.New()
-	e.POST("/signup", uc.SignUp)
-	e.POST("/login", uc.LogIn)
-	e.POST("/logout", uc.LogOut)
+	g := e.Group("/v1")
+	u := g.Group("/secret-admin")
+	u.POST("/signup", uc.SignUp)
+	u.POST("/login", uc.LogIn)
+	u.POST("/logout", uc.LogOut)
+	b := g.Group("/books")
+	b.GET("", bc.GetAllBooks)
+	b.GET("/:bookId", bc.GetBookByBookId)
+	// TODO GET以外のメソッドはログインしているユーザーのみアクセス可能
+	b.POST("", bc.CreateBook)
+	b.PUT("/:bookId", bc.UpdateBook)
+	b.DELETE("/:bookId", bc.DeleteBook)
 	return e
 }

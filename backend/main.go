@@ -13,12 +13,12 @@ import (
 func main() {
 	db := db.NewDB()
 	log.Println("Successfully connected to database")
-	// リポジトリ層コンストラクタ起動
 	userRepository := repository.NewUserRepository(db)
-	// ユースケース層コンストラクタ起動
+	taskRepository := repository.NewBookRepository(db)
 	userUsecase := usecase.NewUserUsecase(userRepository)
-	// コントローラ層コンストラクタ起動
+	bookUsecase := usecase.NewBookUsecase(taskRepository)
 	userController := controller.NewUserController(userUsecase)
-	e := router.NewRouter(userController)
-	e.Logger.Fatal(e.Start(":8080"))
+	bookController := controller.NewBookController(bookUsecase)
+	e := router.NewRouter(userController, bookController)
+	e.Logger.Fatal(e.Start(":8081"))
 }

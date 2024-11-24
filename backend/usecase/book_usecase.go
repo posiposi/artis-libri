@@ -57,12 +57,7 @@ func (bu *bookUsecase) CreateBook(book model.Book) (model.BookResponse, error) {
 	if err := bu.br.CreateBook(&book); err != nil {
 		return model.BookResponse{}, err
 	}
-	bookRes := model.BookResponse{
-		ID:        book.ID,
-		Title:     book.Title,
-		CreatedAt: book.CreatedAt,
-		UpdatedAt: book.UpdatedAt,
-	}
+	bookRes := model.BookResponse(book)
 	return bookRes, nil
 }
 
