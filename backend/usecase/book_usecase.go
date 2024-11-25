@@ -26,7 +26,7 @@ func (bu *bookUsecase) GetAllBooks() ([]model.BookResponse, error) {
 	if err := bu.br.GetAllBooks(&books); err != nil {
 		return nil, err
 	}
-	bookRess := []model.BookResponse{}
+	bookRes := []model.BookResponse{}
 	for _, v := range books {
 		t := model.BookResponse{
 			ID:        v.ID,
@@ -34,9 +34,9 @@ func (bu *bookUsecase) GetAllBooks() ([]model.BookResponse, error) {
 			CreatedAt: v.CreatedAt,
 			UpdatedAt: v.UpdatedAt,
 		}
-		bookRess = append(bookRess, t)
+		bookRes = append(bookRes, t)
 	}
-	return bookRess, nil
+	return bookRes, nil
 }
 
 func (bu *bookUsecase) GetBookByBookId(bookId uint) (model.BookResponse, error) {
