@@ -2,7 +2,6 @@ package controller
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/labstack/echo/v4"
 	"github.com/posiposi/project/backend/model"
@@ -34,9 +33,8 @@ func (bc *bookController) GetAllBooks(c echo.Context) error {
 }
 
 func (bc *bookController) GetBookByBookId(c echo.Context) error {
-	id := c.Param("bookId")
-	bookId, _ := strconv.Atoi(id)
-	bookRes, err := bc.bu.GetBookByBookId(uint(bookId))
+	bookId := c.Param("bookId")
+	bookRes, err := bc.bu.GetBookByBookId(bookId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
@@ -56,13 +54,12 @@ func (bc *bookController) CreateBook(c echo.Context) error {
 }
 
 func (bc *bookController) UpdateBook(c echo.Context) error {
-	id := c.Param("bookId")
-	bookId, _ := strconv.Atoi(id)
+	bookId := c.Param("bookId")
 	book := model.Book{}
 	if err := c.Bind(&book); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
-	bookRes, err := bc.bu.UpdateBook(book, uint(bookId))
+	bookRes, err := bc.bu.UpdateBook(book, bookId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
@@ -70,9 +67,8 @@ func (bc *bookController) UpdateBook(c echo.Context) error {
 }
 
 func (bc *bookController) DeleteBook(c echo.Context) error {
-	id := c.Param("bookId")
-	bookId, _ := strconv.Atoi(id)
-	err := bc.bu.DeleteBook(uint(bookId))
+	bookId := c.Param("bookId")
+	err := bc.bu.DeleteBook(bookId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

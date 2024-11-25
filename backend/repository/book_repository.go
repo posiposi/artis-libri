@@ -5,15 +5,14 @@ import (
 
 	"github.com/posiposi/project/backend/model"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 type IBookRepository interface {
 	GetAllBooks(books *[]model.Book) error
-	GetBookByBookId(book *model.Book, bookId uint) error
+	GetBookByBookId(book *model.Book, bookId string) error
 	CreateBook(book *model.Book) error
-	UpdateBook(book *model.Book, bookId uint) error
-	DeleteBook(bookId uint) error
+	UpdateBook(book *model.Book, bookId string) error
+	DeleteBook(bookId string) error
 }
 
 type bookRepository struct {
@@ -31,7 +30,7 @@ func (br *bookRepository) GetAllBooks(books *[]model.Book) error {
 	return nil
 }
 
-func (br *bookRepository) GetBookByBookId(book *model.Book, bookId uint) error {
+func (br *bookRepository) GetBookByBookId(book *model.Book, bookId string) error {
 	if err := br.db.First(book, bookId).Error; err != nil {
 		return err
 	}
@@ -45,8 +44,8 @@ func (br *bookRepository) CreateBook(book *model.Book) error {
 	return nil
 }
 
-func (br *bookRepository) UpdateBook(book *model.Book, bookId uint) error {
-	result := br.db.Model(book).Clauses(clause.Returning{}).Where("book_id = ?", bookId).Update("title", book.Title)
+func (br *bookRepository) UpdateBook(book *model.Book, bookId string) error {
+	result := br.db.Model(book).Where("id = ?", bookId).Updates(book)
 	if result.Error != nil {
 		return result.Error
 	}
@@ -56,8 +55,8 @@ func (br *bookRepository) UpdateBook(book *model.Book, bookId uint) error {
 	return nil
 }
 
-func (br *bookRepository) DeleteBook(bookId uint) error {
-	result := br.db.Where("book_id = ?", bookId).Delete(&model.Book{})
+func (br *bookRepository) DeleteBook(bookId string) error {
+	result := br.db.Where("id = ?", bookId).Delete(&model.Book{})
 	if result.Error != nil {
 		return result.Error
 	}
