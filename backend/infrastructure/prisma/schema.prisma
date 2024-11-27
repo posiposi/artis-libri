@@ -8,12 +8,44 @@ datasource db {
 }
 
 model User {
-  id         String    @id @default(uuid()) @db.Char(36)
-  name       String
+  id         String    @id @db.Char(36)
   email      String
   password   String
   created_at DateTime  @default(now())
   updated_at DateTime?
 
+  book       Reading[]
+
   @@map("users")
+}
+
+model Book {
+  id           String    @id @db.Char(36)
+  title        String
+  genre        String
+  total_page   Int
+  author       String
+  publisher    String
+  published_at Int       @db.Year
+  created_at   DateTime  @default(now())
+  updated_at   DateTime?
+
+  user         Reading[]
+  
+  @@map("books")
+}
+
+model Reading {
+  user_id          String    @db.Char(36)
+  book_id          String    @db.Char(36)
+  progress_page    Int       @default(0)
+  review           String?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime?
+
+  user             User      @relation(fields: [user_id], references: [id])
+  book             Book      @relation(fields: [book_id], references: [id])
+
+  @@id([user_id, book_id])
+  @@map("readings")
 }
