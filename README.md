@@ -1,46 +1,39 @@
-# Getting Started with Create React App
+# 目的
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+自身が読んだ技術書を記録する Web アプリです。
 
-## Available Scripts
+Notion のリーディングリストは技術書をターゲットにしたものではないため、それに代わるものとして特化したものを作成する予定です。
 
-In the project directory, you can run:
+初期リリースでは自身のみをユーザーとしますが、将来的にはオープンなアプリケーションとして展開するかもしれません。
 
-### `npm start`
+# 機能要件
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- 技術書を記録する事ができること。主な記録要素は下記。
+  - タイトル
+  - 技術ジャンル
+    - 複数選択可能なセレクトボックス形式を想定。
+  - ページ数
+  - 著者
+  - 出版社
+  - 初版発行年
+  - 感想
+- 現在のページが全体から見た進捗状況で、どの程度であるかを把握できること。
+  - **メーターのような UI**を使用して分かりやすく実装すること。
+- 検索機能を有すること
+  - 書籍 CRUD 同様、非同期でのソート検索とする。
+- 他者も閲覧のみは可能だが自身はユーザー認証が可能であること。
+  - 個人キャッチアッププロジェクトなのでサインアップの機能はリリース前に削除予定。
+  - インフラでのセキュリティも要検討。
+- Slack、LINE での共有機能を有すること。
+  - 最優先ではないが最終的には実装したい。
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# 非機能要件
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- 非同期での CRUD 処理を実装すること。
+  - フロントエンドは`React`
+  - バックエンドは`Go`
+- デザインは`Chakra UI`を利用すること。
+  - ただしそこまで詰め込まないこと。
+- API 仕様の記述は`Open API`を使用すること。
+- 実装はクリーンアーキテクチャを意識したものにすること。
+  - アプリ規模は小規模なので`抽象`と`具象`は同一のパッケージに置く予定。
