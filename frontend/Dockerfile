@@ -1,17 +1,14 @@
-# ベースイメージとしてnodeを使用
-FROM node:latest
+# ベースイメージとしてNode.jsを使用
+FROM node:22-slim
 
-# 作業ディレクトリを作成
+# 作業ディレクトリを設定
 WORKDIR /app
 
-# package.jsonとpackage-lock.jsonをコピー
+# パッケージファイルをコピー
 COPY package.json package-lock.json ./
 
 # 依存関係をインストール
 RUN npm install
 
-# プロジェクトの全てのファイルをコピー
-COPY . .
-
-# 開発サーバーを起動
+# 開発用サーバの起動
 CMD ["npm", "run", "dev"]
