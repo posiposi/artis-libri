@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "vite --mode development",
+    "build:stg": "tsc -b && vite build --mode staging",
+    "build:prod": "vite preview --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
     "check": "npm run format && npm run lint",

@@ -8,9 +8,11 @@ const BookTable = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    // const env = process.env.REACT_API_BASE_URL;
     const fetchBooks = async () => {
       try {
-        const response = await fetch("http://localhost:8081/v1/books");
+        const baseURL = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${baseURL}/v1/books`);
         const data = await response.json();
         setBooks(data);
       } catch (error) {
