@@ -24,7 +24,6 @@ model Book {
   title        String    @default("")
   genre        String    @default("")
   total_page   Int       @default(0)
-  // TODO 複数著者を想定しを想定して中間テーブルを作成する
   author       String    @default("")
   publisher    String    @default("")
   published_at Int       @db.Year

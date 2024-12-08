@@ -8,7 +8,6 @@ const BookTable = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // const env = process.env.REACT_API_BASE_URL;
     const fetchBooks = async () => {
       try {
         const baseURL = import.meta.env.VITE_API_BASE_URL;
@@ -49,6 +48,7 @@ const BookTable = () => {
           <Table.ColumnHeader>出版年</Table.ColumnHeader>
           <Table.ColumnHeader>総ページ数</Table.ColumnHeader>
           <Table.ColumnHeader>現状ページ</Table.ColumnHeader>
+          <Table.ColumnHeader>進捗率</Table.ColumnHeader>
           <Table.ColumnHeader textAlign="end">金額</Table.ColumnHeader>
         </Table.Row>
       </Table.Header>
@@ -62,6 +62,7 @@ const BookTable = () => {
             <Table.Cell>{book.published_at}年</Table.Cell>
             <Table.Cell>{book.total_page}</Table.Cell>
             <Table.Cell>{book.progress_page}</Table.Cell>
+            <Table.Cell>{book.progress_percentage}</Table.Cell>
             <Table.Cell textAlign="end">
               ¥{Number(book.price).toLocaleString()}
             </Table.Cell>

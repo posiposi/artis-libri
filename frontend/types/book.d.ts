@@ -4,6 +4,7 @@ export type Book = {
   genre: string;
   total_page: number;
   progress_page: number;
+  progress_percentage: number;
   author: string;
   publisher: string;
   published_at: number;
