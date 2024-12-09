@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Table } from "@chakra-ui/react";
 import { Book } from "../../types/book";
 import { Box, Spinner } from "@chakra-ui/react";
+import BookEditButton from "./BookEditButton";
+import BookDeleteButton from "./BookDeleteButton";
 
 const BookTable = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -49,7 +51,9 @@ const BookTable = () => {
           <Table.ColumnHeader>総ページ数</Table.ColumnHeader>
           <Table.ColumnHeader>現状ページ</Table.ColumnHeader>
           <Table.ColumnHeader>進捗率</Table.ColumnHeader>
-          <Table.ColumnHeader textAlign="end">金額</Table.ColumnHeader>
+          <Table.ColumnHeader>金額</Table.ColumnHeader>
+          <Table.ColumnHeader></Table.ColumnHeader>
+          <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
         </Table.Row>
       </Table.Header>
       <Table.Body>
@@ -60,11 +64,15 @@ const BookTable = () => {
             <Table.Cell>{book.genre}</Table.Cell>
             <Table.Cell>{book.publisher}</Table.Cell>
             <Table.Cell>{book.published_at}年</Table.Cell>
-            <Table.Cell>{book.total_page}</Table.Cell>
-            <Table.Cell>{book.progress_page}</Table.Cell>
-            <Table.Cell>{book.progress_percentage}</Table.Cell>
+            <Table.Cell>{book.total_page}p</Table.Cell>
+            <Table.Cell>{book.progress_page}p</Table.Cell>
+            <Table.Cell>{book.progress_percentage}%</Table.Cell>
+            <Table.Cell>¥{Number(book.price).toLocaleString()}</Table.Cell>
+            <Table.Cell>
+              <BookEditButton></BookEditButton>
+            </Table.Cell>
             <Table.Cell textAlign="end">
-              ¥{Number(book.price).toLocaleString()}
+              <BookDeleteButton></BookDeleteButton>
             </Table.Cell>
           </Table.Row>
         ))}
