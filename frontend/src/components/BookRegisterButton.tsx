@@ -4,11 +4,13 @@ import { AiFillBook } from "react-icons/ai";
 
 const BookRegisterButton = () => {
   return (
-    <HStack>
-      <Button colorPalette="teal" variant="solid">
-        <AiFillBook /> Register
-      </Button>
-    </HStack>
+    <>
+      <HStack>
+        <Button colorPalette="teal" variant="solid">
+          <AiFillBook /> Register
+        </Button>
+      </HStack>
+    </>
   );
 };
 

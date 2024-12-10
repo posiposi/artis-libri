@@ -1,5 +1,5 @@
 import "./App.css";
-import BookRegisterButton from "./components/BookRegisterButton";
+import BookRegisterDialog from "./components/BookRegisterDialog";
 import BookTable from "./components/BookTable";
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
     <>
       <h1>Artis Libri</h1>
       <div className="book_register_btn">
-        <BookRegisterButton />
+        <BookRegisterDialog />
       </div>
       <div className="card">
         <BookTable />
