@@ -12,12 +12,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Field } from "@/components/ui/field";
-import { useRef } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Book } from "../../types/book";
 
 const BookRegisterDialog = () => {
-  const ref = useRef<HTMLInputElement>(null);
+  const { register, handleSubmit } = useForm<Book>();
+  const onSubmit: SubmitHandler<Book> = (data) => alert(data.title);
   return (
-    <DialogRoot initialFocusEl={() => ref.current}>
+    <DialogRoot>
       <DialogTrigger asChild>
         <Button variant="outline">
           <AiFillBook /> Register
@@ -25,24 +27,46 @@ const BookRegisterDialog = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Dialog Header</DialogTitle>
+          <DialogTitle>書籍登録</DialogTitle>
         </DialogHeader>
-        <DialogBody pb="4">
-          <Stack gap="4">
-            <Field label="First Name">
-              <Input placeholder="First Name" />
-            </Field>
-            <Field label="Last Name">
-              <Input ref={ref} placeholder="Focus First" />
-            </Field>
-          </Stack>
-        </DialogBody>
-        <DialogFooter>
-          <DialogActionTrigger asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogActionTrigger>
-          <Button>Save</Button>
-        </DialogFooter>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogBody pb="4">
+            <Stack gap="4">
+              <Field label="タイトル">
+                <Input {...register("title")} />
+              </Field>
+              <Field label="著者">
+                <Input {...register("author")} />
+              </Field>
+              <Field label="ジャンル">
+                <Input {...register("genre")} />
+              </Field>
+              <Field label="出版社">
+                <Input {...register("publisher")} />
+              </Field>
+              <Field label="出版年">
+                <Input {...register("publishedAt")} />
+              </Field>
+              <Field label="総ページ数">
+                <Input {...register("totalPage")} />
+              </Field>
+              <Field label="現状ページ">
+                <Input {...register("progressPage")} placeholder="0" />
+              </Field>
+              <Field label="金額">
+                <Input {...register("price")} />
+              </Field>
+            </Stack>
+          </DialogBody>
+          <DialogFooter>
+            <DialogActionTrigger asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogActionTrigger>
+            <Button type="submit" variant="outline" colorPalette="blue">
+              Save
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </DialogRoot>
   );

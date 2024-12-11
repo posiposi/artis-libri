@@ -63,10 +63,10 @@ const BookTable = () => {
             <Table.Cell>{book.author}</Table.Cell>
             <Table.Cell>{book.genre}</Table.Cell>
             <Table.Cell>{book.publisher}</Table.Cell>
-            <Table.Cell>{book.published_at}年</Table.Cell>
-            <Table.Cell>{book.total_page}p</Table.Cell>
-            <Table.Cell>{book.progress_page}p</Table.Cell>
-            <Table.Cell>{book.progress_percentage}%</Table.Cell>
+            <Table.Cell>{book.publishedAt}年</Table.Cell>
+            <Table.Cell>{book.totalPage}p</Table.Cell>
+            <Table.Cell>{book.progressPage}p</Table.Cell>
+            <Table.Cell>{book.progressPercentage}%</Table.Cell>
             <Table.Cell>¥{Number(book.price).toLocaleString()}</Table.Cell>
             <Table.Cell>
               <BookEditButton></BookEditButton>
