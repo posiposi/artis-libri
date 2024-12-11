@@ -2,11 +2,11 @@ export type Book = {
   id: string;
   title: string;
   genre: string;
-  total_page: number;
-  progress_page: number;
-  progress_percentage: number;
+  totalPage: number;
+  progressPage: number;
+  progressPercentage: number;
   author: string;
   publisher: string;
-  published_at: number;
+  publishedAt: number;
   price: number;
 };

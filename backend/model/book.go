@@ -11,15 +11,15 @@ type Book struct {
 	ID                 string          `json:"id" gorm:"primary_key"`
 	Title              string          `json:"title" gorm:"not null"`
 	Genre              string          `json:"genre"`
-	TotalPage          int             `json:"total_page"`
-	ProgressPage       int             `json:"progress_page"`
-	ProgressPercentage int             `json:"progress_percentage"`
+	TotalPage          int             `json:"totalPage"`
+	ProgressPage       int             `json:"progressPage"`
+	ProgressPercentage int             `json:"progressPercentage"`
 	Price              decimal.Decimal `json:"price"`
 	Author             string          `json:"author"`
 	Publisher          string          `json:"publisher"`
-	PublishedAt        int             `json:"published_at"`
-	CreatedAt          time.Time       `json:"created_at"`
-	UpdatedAt          time.Time       `json:"updated_at"`
+	PublishedAt        int             `json:"publishedAt"`
+	CreatedAt          time.Time       `json:"createdAt"`
+	UpdatedAt          time.Time       `json:"updatedAt"`
 }
 
 func NewBook(
@@ -52,14 +52,14 @@ type BookResponse struct {
 	Title              string          `json:"title" gorm:"not null"`
 	Genre              string          `json:"genre"`
 	TotalPage          int             `json:"total_page"`
-	ProgressPage       int             `json:"progress_page"`
-	ProgressPercentage int             `json:"progress_percentage"`
+	ProgressPage       int             `json:"progressPage"`
+	ProgressPercentage int             `json:"progressPercentage"`
 	Price              decimal.Decimal `json:"price"`
 	Author             string          `json:"author"`
 	Publisher          string          `json:"publisher"`
-	PublishedAt        int             `json:"published_at"`
-	CreatedAt          time.Time       `json:"created_at"`
-	UpdatedAt          time.Time       `json:"updated_at"`
+	PublishedAt        int             `json:"publishedAt"`
+	CreatedAt          time.Time       `json:"createdAt"`
+	UpdatedAt          time.Time       `json:"updatedAt"`
 }
 
 func calcProgressPercentage(totalPage, progressPage int) int {
