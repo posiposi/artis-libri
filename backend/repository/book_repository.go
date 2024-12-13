@@ -3,6 +3,7 @@ package repository
 import (
 	"fmt"
 
+	"github.com/google/uuid"
 	"github.com/posiposi/project/backend/model"
 	"gorm.io/gorm"
 )
@@ -41,9 +42,14 @@ func (br *bookRepository) GetBookByBookId(book *model.Book, bookId string) error
 }
 
 func (br *bookRepository) CreateBook(book *model.Book) error {
-	if err := br.db.Create(book).Error; err != nil {
-		return err
-	}
+	br.db.Transaction(func(tx *gorm.DB) error {
+		book.ID = uuid.NewString()
+		if err := br.db.Omit("ProgressPage", "Review", "ProgressPercentage").Create(book).Error; err != nil {
+			return err
+		}
+		// TODO : Add reading
+		return nil
+	})
 	return nil
 }
 

@@ -3,8 +3,8 @@ export type Book = {
   title: string;
   genre: string;
   totalPage: number;
-  progressPage: number;
-  progressPercentage: number;
+  progressPage?: number;
+  progressPercentage?: number;
   author: string;
   publisher: string;
   publishedAt: number;

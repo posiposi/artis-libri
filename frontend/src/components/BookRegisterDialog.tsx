@@ -15,9 +15,47 @@ import { Field } from "@/components/ui/field";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Book } from "../../types/book";
 
+interface BookInput {
+  id: string;
+  title: string;
+  genre: string;
+  totalPage: string;
+  author: string;
+  publisher: string;
+  publishedAt: string;
+  price: string;
+}
+
 const BookRegisterDialog = () => {
-  const { register, handleSubmit } = useForm<Book>();
-  const onSubmit: SubmitHandler<Book> = (data) => alert(data.title);
+  const { register, handleSubmit } = useForm<BookInput>();
+  const onSubmit: SubmitHandler<BookInput> = (data) => {
+    const publishedAtYear = new Date(data.publishedAt).getFullYear();
+    const totalPage = parseInt(data.totalPage);
+    const price = parseInt(data.price);
+    const bookData: Book = {
+      ...data,
+      publishedAt: publishedAtYear,
+      totalPage: totalPage,
+      price: price,
+    };
+
+    try {
+      console.log(JSON.stringify(bookData));
+      const baseURL = import.meta.env.VITE_API_BASE_URL;
+      fetch(`${baseURL}/v1/books`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookData),
+      });
+    } catch (error) {
+      console.error("Error registering book:", error);
+    } finally {
+      // テスト用
+      alert("通信完了");
+    }
+  };
   return (
     <DialogRoot>
       <DialogTrigger asChild>
@@ -49,9 +87,6 @@ const BookRegisterDialog = () => {
               </Field>
               <Field label="総ページ数">
                 <Input {...register("totalPage")} />
-              </Field>
-              <Field label="現状ページ">
-                <Input {...register("progressPage")} placeholder="0" />
               </Field>
               <Field label="金額">
                 <Input {...register("price")} />
