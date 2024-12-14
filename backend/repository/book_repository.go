@@ -47,7 +47,6 @@ func (br *bookRepository) CreateBook(book *model.Book) error {
 		if err := br.db.Omit("ProgressPage", "Review", "ProgressPercentage").Create(book).Error; err != nil {
 			return err
 		}
-		// TODO : Add reading
 		return nil
 	})
 	return nil
