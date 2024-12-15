@@ -27,7 +27,7 @@ interface BookInput {
 }
 
 const BookRegisterDialog = () => {
-  const { register, handleSubmit } = useForm<BookInput>();
+  const { register, handleSubmit, reset } = useForm<BookInput>();
   const onSubmit: SubmitHandler<BookInput> = async (data) => {
     const publishedAtYear = new Date(data.publishedAt).getFullYear();
     const totalPage = parseInt(data.totalPage);
@@ -52,6 +52,7 @@ const BookRegisterDialog = () => {
         throw new Error("書籍の登録に失敗しました。");
       }
       alert("書籍を登録しました。");
+      reset();
     } catch (error: unknown) {
       alert(error);
     }
@@ -97,9 +98,11 @@ const BookRegisterDialog = () => {
             <DialogActionTrigger asChild>
               <Button variant="outline">Cancel</Button>
             </DialogActionTrigger>
-            <Button type="submit" variant="outline" colorPalette="blue">
-              Save
-            </Button>
+            <DialogActionTrigger asChild>
+              <Button type="submit" variant="outline" colorPalette="blue">
+                Save
+              </Button>
+            </DialogActionTrigger>
           </DialogFooter>
         </form>
       </DialogContent>
