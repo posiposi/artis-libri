@@ -28,7 +28,7 @@ interface BookInput {
 
 const BookRegisterDialog = () => {
   const { register, handleSubmit } = useForm<BookInput>();
-  const onSubmit: SubmitHandler<BookInput> = (data) => {
+  const onSubmit: SubmitHandler<BookInput> = async (data) => {
     const publishedAtYear = new Date(data.publishedAt).getFullYear();
     const totalPage = parseInt(data.totalPage);
     const price = parseInt(data.price);
@@ -40,20 +40,20 @@ const BookRegisterDialog = () => {
     };
 
     try {
-      console.log(JSON.stringify(bookData));
       const baseURL = import.meta.env.VITE_API_BASE_URL;
-      fetch(`${baseURL}/v1/books`, {
+      const response = await fetch(`${baseURL}/v1/books`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(bookData),
       });
-    } catch (error) {
-      console.error("Error registering book:", error);
-    } finally {
-      // テスト用
-      alert("通信完了");
+      if (!response.ok) {
+        throw new Error("書籍の登録に失敗しました。");
+      }
+      alert("書籍を登録しました。");
+    } catch (error: unknown) {
+      alert(error);
     }
   };
   return (

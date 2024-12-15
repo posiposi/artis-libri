@@ -48,6 +48,7 @@ func (bc *bookController) CreateBook(c echo.Context) error {
 	}
 	bookRes, err := bc.bu.CreateBook(book)
 	if err != nil {
+		// TODO より詳細なエラーステータスコードを返す
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusCreated, bookRes)
