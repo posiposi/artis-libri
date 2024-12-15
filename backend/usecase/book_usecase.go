@@ -6,7 +6,7 @@ import (
 )
 
 type IBookUsecase interface {
-	GetAllBooks() ([]model.BookResponse, error)
+	GetAllBooks() ([]model.Book, error)
 	GetBookByBookId(bookId string) (model.BookResponse, error)
 	CreateBook(book model.Book) (model.BookResponse, error)
 	UpdateBook(book model.Book, bookId string) (model.BookResponse, error)
@@ -21,15 +21,28 @@ func NewBookUsecase(br repository.IBookRepository) IBookUsecase {
 	return &bookUsecase{br}
 }
 
-func (bu *bookUsecase) GetAllBooks() ([]model.BookResponse, error) {
+func (bu *bookUsecase) GetAllBooks() ([]model.Book, error) {
 	books := []model.Book{}
 	if err := bu.br.GetAllBooks(&books); err != nil {
 		return nil, err
 	}
-	bookRes := []model.BookResponse{}
+	bookRes := []model.Book{}
 	for _, v := range books {
-		t := model.BookResponse(v)
-		bookRes = append(bookRes, t)
+		t, err := model.NewBook(
+			v.ID,
+			v.Title,
+			v.Genre,
+			v.Author,
+			v.Publisher,
+			v.TotalPage,
+			v.ProgressPage,
+			v.PublishedAt,
+			v.Price,
+		)
+		if err != nil {
+			return nil, err
+		}
+		bookRes = append(bookRes, *t)
 	}
 	return bookRes, nil
 }

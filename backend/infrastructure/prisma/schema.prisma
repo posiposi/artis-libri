@@ -21,12 +21,13 @@ model User {
 
 model Book {
   id           String    @id @db.Char(36)
-  title        String
-  genre        String
-  total_page   Int
-  author       String
-  publisher    String
+  title        String    @default("")
+  genre        String    @default("")
+  total_page   Int       @default(0)
+  author       String    @default("")
+  publisher    String    @default("")
   published_at Int       @db.Year
+  price        Decimal   @db.Decimal(10, 2) @default(0)
   created_at   DateTime  @default(now())
   updated_at   DateTime?
 
