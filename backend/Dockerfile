@@ -1,4 +1,4 @@
-FROM golang:1.22.0
+FROM golang:1.23.4
 
 WORKDIR /go/src
 
@@ -8,6 +8,8 @@ RUN go mod download
 RUN go get github.com/steebchen/prisma-client-go
 RUN go get -u github.com/go-sql-driver/mysql
 RUN go get -u gorm.io/gorm
+RUN go install github.com/air-verse/air@latest
+CMD [ "air" ]
 
 # Alias for the prisma client
 RUN echo 'alias prisma="go run github.com/steebchen/prisma-client-go"' >> ~/.bashrc
