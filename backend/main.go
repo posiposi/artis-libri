@@ -20,5 +20,5 @@ func main() {
 	userController := controller.NewUserController(userUsecase)
 	bookController := controller.NewBookController(bookUsecase)
 	e := router.NewRouter(userController, bookController)
-	e.Logger.Fatal(e.Start(":8081"))
+	e.Logger.Fatal(e.Start(":8080"))
 }
