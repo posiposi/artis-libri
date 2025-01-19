@@ -61,9 +61,9 @@ services:
     image: stoplight/prism:4
     command: "mock -h 0.0.0.0 /openapi/openapi.yaml"
     volumes:
-      - ./openapi/src/openapi.yaml:/openapi/openapi.yaml:ro
+      - ./openapi:/openapi
     ports:
-      - "8011:4010"
+      - "4010:4010"
 
 volumes:
   mysql_data:
