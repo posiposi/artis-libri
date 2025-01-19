@@ -47,14 +47,15 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true
 
-  swagger-ui:
-    image: swaggerapi/swagger-ui
-    environment:
-      - SWAGGER_JSON=/openapi/openapi.yaml
-    volumes:
-      - ./openapi/src/openapi.yaml:/openapi/openapi.yaml
+  redoc:
+    image: redocly/redoc
+    container_name: "redoc"
     ports:
-      - "8010:8010"
+      - "8082:80"
+    volumes:
+      - ./openapi:/usr/share/nginx/html/openapi
+    environment:
+      SPEC_URL: openapi/openapi.yaml
 
   prism:
     image: stoplight/prism:4
