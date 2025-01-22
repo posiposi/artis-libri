@@ -2,6 +2,8 @@ FROM golang:1.23.4
 
 WORKDIR /go/src
 
+RUN apt-get update && apt-get install -y vim
+
 COPY go.mod go.sum ./
 
 RUN go mod download
