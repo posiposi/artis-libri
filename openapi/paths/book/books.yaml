@@ -18,7 +18,13 @@
             summary: 書籍ID
     responses:
       "200":
-        $ref: "../../components/responses/common/200Success.yaml"
+        description: OK
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message: { type: string, example: "書籍を削除しました。" }
       "400":
         $ref: "../../components/responses/common/400BadRequest.yaml"
       "404":
