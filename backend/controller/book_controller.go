@@ -73,5 +73,5 @@ func (bc *bookController) DeleteBook(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	return c.JSON(http.StatusOK, "書籍を削除しました。")
+	return c.JSON(http.StatusOK, model.MessageResponse{Message: "書籍を削除しました。"})
 }
