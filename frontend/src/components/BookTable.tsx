@@ -72,7 +72,7 @@ const BookTable = () => {
               <BookEditButton></BookEditButton>
             </Table.Cell>
             <Table.Cell textAlign="end">
-              <BookDeleteButton></BookDeleteButton>
+              <BookDeleteButton bookId={book.id}></BookDeleteButton>
             </Table.Cell>
           </Table.Row>
         ))}

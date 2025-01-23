@@ -12,11 +12,40 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import React from "react";
 
-const BookDeleteButton = () => {
+interface BookDeleteButtonProps {
+  bookId: string;
+}
+
+const BookDeleteButton: React.FC<BookDeleteButtonProps> = ({ bookId }) => {
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const deleteBook = async () => {
+    try {
+      const baseURL = import.meta.env.VITE_API_BASE_URL;
+      // DELETEリクエストを送信
+      const response = await fetch(`${baseURL}/v1/books/${bookId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("書籍の削除に失敗しました。");
+      }
+      alert("書籍を削除しました。");
+      setIsDialogOpen(false);
+    } catch (error: unknown) {
+      console.log("Error deleting book:", error);
+    }
+  };
+
   return (
     <HStack>
-      <DialogRoot role="alertdialog">
+      <DialogRoot
+        open={isDialogOpen}
+        onOpenChange={(details: { open: boolean }) =>
+          setIsDialogOpen(details.open)
+        }
+        role="alertdialog"
+      >
         <DialogTrigger asChild>
           <Button variant="outline" size="sm">
             <AiFillDelete /> Delete
@@ -24,19 +53,18 @@ const BookDeleteButton = () => {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Are you sure?</DialogTitle>
+            <DialogTitle>削除してもよろしいですか？</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <p>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our systems.
-            </p>
+            <p>本当に削除してもよろしいですか？この操作は取り消せません。</p>
           </DialogBody>
           <DialogFooter>
             <DialogActionTrigger asChild>
               <Button variant="outline">Cancel</Button>
             </DialogActionTrigger>
-            <Button colorPalette="red">Delete</Button>
+            <Button color={"red"} onClick={() => deleteBook()}>
+              Delete
+            </Button>
           </DialogFooter>
           <DialogCloseTrigger />
         </DialogContent>
