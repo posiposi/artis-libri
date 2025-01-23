@@ -16,14 +16,17 @@ import React from "react";
 
 interface BookDeleteButtonProps {
   bookId: string;
+  fetchBooks: () => void;
 }
 
-const BookDeleteButton: React.FC<BookDeleteButtonProps> = ({ bookId }) => {
+const BookDeleteButton: React.FC<BookDeleteButtonProps> = ({
+  bookId,
+  fetchBooks,
+}) => {
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const deleteBook = async () => {
     try {
       const baseURL = import.meta.env.VITE_API_BASE_URL;
-      // DELETEリクエストを送信
       const response = await fetch(`${baseURL}/v1/books/${bookId}`, {
         method: "DELETE",
       });
@@ -32,8 +35,10 @@ const BookDeleteButton: React.FC<BookDeleteButtonProps> = ({ bookId }) => {
       }
       alert("書籍を削除しました。");
       setIsDialogOpen(false);
+      fetchBooks();
     } catch (error: unknown) {
       console.log("Error deleting book:", error);
+      alert("書籍の削除に失敗しました。");
     }
   };
 
@@ -53,10 +58,10 @@ const BookDeleteButton: React.FC<BookDeleteButtonProps> = ({ bookId }) => {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>削除してもよろしいですか？</DialogTitle>
+            <DialogTitle>書籍削除</DialogTitle>
           </DialogHeader>
           <DialogBody>
-            <p>本当に削除してもよろしいですか？この操作は取り消せません。</p>
+            <p>本当に削除してもよろしいですか？</p>
           </DialogBody>
           <DialogFooter>
             <DialogActionTrigger asChild>

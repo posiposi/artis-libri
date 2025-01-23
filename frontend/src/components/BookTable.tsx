@@ -8,21 +8,21 @@ import BookDeleteButton from "./BookDeleteButton";
 const BookTable = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const fetchBooks = async () => {
+    try {
+      const baseURL = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${baseURL}/v1/books`);
+      const data = await response.json();
+      setBooks(data);
+    } catch (error) {
+      console.error("Error fetching books:", error);
+      alert("書籍の取得に失敗しました。");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchBooks = async () => {
-      try {
-        const baseURL = import.meta.env.VITE_API_BASE_URL;
-        const response = await fetch(`${baseURL}/v1/books`);
-        const data = await response.json();
-        setBooks(data);
-      } catch (error) {
-        console.error("Error fetching books:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchBooks();
   }, []);
 
@@ -72,7 +72,10 @@ const BookTable = () => {
               <BookEditButton></BookEditButton>
             </Table.Cell>
             <Table.Cell textAlign="end">
-              <BookDeleteButton bookId={book.id}></BookDeleteButton>
+              <BookDeleteButton
+                bookId={book.id}
+                fetchBooks={fetchBooks}
+              ></BookDeleteButton>
             </Table.Cell>
           </Table.Row>
         ))}
