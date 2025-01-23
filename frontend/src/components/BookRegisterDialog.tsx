@@ -26,7 +26,13 @@ interface BookInput {
   price: string;
 }
 
-const BookRegisterDialog = () => {
+interface BookRegisterDialogProps {
+  fetchBooks: () => void;
+}
+
+const BookRegisterDialog: React.FC<BookRegisterDialogProps> = ({
+  fetchBooks,
+}) => {
   const { register, handleSubmit, reset } = useForm<BookInput>();
   const onSubmit: SubmitHandler<BookInput> = async (data) => {
     const publishedAtYear = new Date(data.publishedAt).getFullYear();
@@ -53,6 +59,7 @@ const BookRegisterDialog = () => {
       }
       alert("書籍を登録しました。");
       reset();
+      fetchBooks();
     } catch (error: unknown) {
       alert(error);
     }
