@@ -1,4 +1,4 @@
-export const fetchBooks = async () => {
+export const getBooks = async () => {
   const baseURL = import.meta.env.VITE_API_BASE_URL;
   const response = await fetch(`${baseURL}/v1/books`);
   if (!response.ok) {

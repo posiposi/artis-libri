@@ -4,7 +4,7 @@ import { Book } from "../../types/book";
 import { Box, Spinner } from "@chakra-ui/react";
 import BookEditButton from "./BookEditButton";
 import BookDeleteButton from "./BookDeleteButton";
-import { fetchBooks as fetchBooksApi } from "../utils/fetchBooks";
+import { getBooks } from "../utils/getBooks";
 import BookRegisterDialog from "../components/BookRegisterDialog";
 
 const BookTable = () => {
@@ -12,7 +12,7 @@ const BookTable = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const fetchBooks = async () => {
     try {
-      const data = await fetchBooksApi();
+      const data = await getBooks();
       setBooks(data);
     } catch (error) {
       console.error("Error fetching books:", error);
