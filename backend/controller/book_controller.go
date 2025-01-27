@@ -14,10 +14,16 @@ type IBookController interface {
 	CreateBook(c echo.Context) error
 	UpdateBook(c echo.Context) error
 	DeleteBook(c echo.Context) error
+	RecommendBooks(c echo.Context) error
 }
 
 type bookController struct {
 	bu usecase.IBookUsecase
+}
+
+type chatResponse struct {
+	message string
+	tokens  int
 }
 
 func NewBookController(bu usecase.IBookUsecase) IBookController {
@@ -74,4 +80,12 @@ func (bc *bookController) DeleteBook(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	return c.JSON(http.StatusOK, model.MessageResponse{Message: "書籍を削除しました。"})
+}
+
+func (bc *bookController) RecommendBooks(c echo.Context) error {
+	chatResp, err := bc.bu.FetchRecommendBooks()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	return c.JSON(http.StatusOK, chatResp)
 }

@@ -66,7 +66,6 @@ func (c *OpenAIClient) SendBooks(prompts []*Prompt) (*ChatResponse, error) {
 	if err := json.Unmarshal(body, &openAIResp); err != nil {
 		return nil, err
 	}
-
 	if len(openAIResp.Choices) == 0 {
 		return nil, fmt.Errorf("API response does not contain any choices")
 	}
