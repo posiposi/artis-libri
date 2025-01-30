@@ -88,10 +88,14 @@ func (bu *bookUsecase) FetchRecommendBooks() (*openai.ChatResponse, error) {
 	if repository != nil {
 		return nil, repository
 	}
+	titles := ""
+	for _, book := range books {
+		titles += book.Title + "\n"
+	}
 
 	systemPrompt := &openai.Prompt{
 		Role:    openai.System,
-		Content: "名古屋の魅力を教えて下さい。",
+		Content: "次に挙げる本を読んだ後に読むおすすめの書籍を1冊教えてください。解説は不要です。書籍名と著者、出版社、Amazonのリンクのみを回答してください。\n" + titles,
 	}
 
 	var prompts []*openai.Prompt
