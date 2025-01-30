@@ -3,6 +3,7 @@ package usecase
 import (
 	"testing"
 
+	"github.com/posiposi/project/backend/infrastructure/openai"
 	"github.com/posiposi/project/backend/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -10,6 +11,15 @@ import (
 
 type MockBookRepository struct {
 	mock.Mock
+}
+
+type MockOpenAICommunicator struct {
+	mock.Mock
+}
+
+func (m *MockOpenAICommunicator) SendBooks(prompts []*openai.Prompt) (*openai.ChatResponse, error) {
+	args := m.Called(prompts)
+	return args.Get(0).(*openai.ChatResponse), args.Error(1)
 }
 
 func (m *MockBookRepository) GetAllBooks(books *[]model.Book) error {
@@ -39,7 +49,8 @@ func (m *MockBookRepository) DeleteBook(bookId string) error {
 
 func TestDeleteBook(t *testing.T) {
 	mockRepo := new(MockBookRepository)
-	usecase := NewBookUsecase(mockRepo)
+	mockClient := new(MockOpenAICommunicator)
+	usecase := NewBookUsecase(mockRepo, mockClient)
 
 	bookId := "1"
 	mockRepo.On("DeleteBook", bookId).Return(nil)
