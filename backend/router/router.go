@@ -25,5 +25,6 @@ func NewRouter(uc controller.IUserController, bc controller.IBookController) *ec
 	b.POST("", bc.CreateBook)
 	b.PUT("/:bookId", bc.UpdateBook)
 	b.DELETE("/:bookId", bc.DeleteBook)
+	b.POST("/recommend", bc.RecommendBooks)
 	return e
 }
