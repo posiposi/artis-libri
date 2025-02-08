@@ -6,6 +6,8 @@ import (
 	"github.com/posiposi/project/backend/repository"
 )
 
+const QuestionMessage string = "次に挙げる本を読んだ後に読むおすすめの書籍を1冊教えてください。解説は不要です。書籍名と著者、出版社のみを回答してください。\n"
+
 type IBookUsecase interface {
 	GetAllBooks() ([]model.Book, error)
 	GetBookByBookId(bookId string) (model.BookResponse, error)
@@ -95,7 +97,7 @@ func (bu *bookUsecase) FetchRecommendBooks() (*openai.ChatResponse, error) {
 
 	systemPrompt := &openai.Prompt{
 		Role:    openai.System,
-		Content: "次に挙げる本を読んだ後に読むおすすめの書籍を1冊教えてください。解説は不要です。書籍名と著者、出版社、Amazonのリンクのみを回答してください。\n" + titles,
+		Content: QuestionMessage + titles,
 	}
 
 	var prompts []*openai.Prompt
