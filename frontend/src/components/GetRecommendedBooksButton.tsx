@@ -31,8 +31,7 @@ const GetRecommendBooksButton = () => {
         throw new Error("error occurred");
       }
       const data = await response.json();
-      console.log(data);
-      setResponseMessage(data);
+      setResponseMessage(data.content);
       setLoading(false);
     } catch (error: unknown) {
       console.error(error);
@@ -69,7 +68,7 @@ const GetRecommendBooksButton = () => {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Dialog Title</DialogTitle>
+            <DialogTitle>次に読むおすすめ書籍は…</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <p>{responseMessage}</p>
