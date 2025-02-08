@@ -2,7 +2,6 @@ import { Button, Spinner, Center } from "@chakra-ui/react";
 import {
   DialogActionTrigger,
   DialogBody,
-  DialogCloseTrigger,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -40,6 +39,10 @@ const GetRecommendBooksButton = () => {
     }
   };
 
+  const handleClose = () => {
+    setResponseMessage("");
+  };
+
   return (
     <>
       {loading && (
@@ -54,7 +57,7 @@ const GetRecommendBooksButton = () => {
           <Spinner size="xl" />
         </Center>
       )}
-      <DialogRoot>
+      <DialogRoot onEscapeKeyDown={handleClose}>
         <DialogTrigger asChild>
           <Button variant="outline" size="sm" onClick={handleRecommend}>
             {loading ? (
@@ -75,10 +78,11 @@ const GetRecommendBooksButton = () => {
           </DialogBody>
           <DialogFooter>
             <DialogActionTrigger asChild>
-              <Button variant="outline">Close</Button>
+              <Button variant="outline" onClick={handleClose}>
+                Close
+              </Button>
             </DialogActionTrigger>
           </DialogFooter>
-          <DialogCloseTrigger />
         </DialogContent>
       </DialogRoot>
     </>
