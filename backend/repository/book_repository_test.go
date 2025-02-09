@@ -48,43 +48,56 @@ func TestMain(m *testing.M) {
 }
 
 func TestUpdateBook(t *testing.T) {
-	bookId := "1"
-	book := &model.Book{Title: "new_title", Genre: "new_genre"}
-
-	mock.ExpectBegin()
-	mock.ExpectExec(regexp.QuoteMeta(
-		"UPDATE `books` SET `title`=?,`genre`=?,`updated_at`=? WHERE id = ?")).
-		WithArgs(book.Title, book.Genre, sqlmock.AnyArg(), bookId).
-		WillReturnResult(sqlmock.NewResult(1, 1))
-	mock.ExpectCommit()
-
-	if err := repo.UpdateBook(book, bookId); err != nil {
-		t.Fatal(err)
+	tests := []struct {
+		name          string
+		bookId        string
+		book          *model.Book
+		mockSetup     func()
+		expectedError bool
+	}{
+		{
+			name:   "successful update",
+			bookId: "1",
+			book:   &model.Book{Title: "new_title", Genre: "new_genre"},
+			mockSetup: func() {
+				mock.ExpectBegin()
+				mock.ExpectExec(regexp.QuoteMeta(
+					"UPDATE `books` SET `title`=?,`genre`=?,`updated_at`=? WHERE id = ?")).
+					WithArgs("new_title", "new_genre", sqlmock.AnyArg(), "1").
+					WillReturnResult(sqlmock.NewResult(1, 1))
+				mock.ExpectCommit()
+			},
+			expectedError: false,
+		},
+		{
+			name:   "book not found",
+			bookId: "2",
+			book:   &model.Book{Title: "new_title", Genre: "new_genre"},
+			mockSetup: func() {
+				mock.ExpectBegin()
+				mock.ExpectExec(regexp.QuoteMeta(
+					"UPDATE `books` SET `title`=?,`genre`=?,`updated_at`=? WHERE id = ?")).
+					WithArgs("new_title", "new_genre", sqlmock.AnyArg(), "2").
+					WillReturnError(errors.New("record not found"))
+				mock.ExpectRollback()
+			},
+			expectedError: true,
+		},
 	}
-	fmt.Println(book)
 
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Test Create User: %v", err)
-	}
-}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.mockSetup()
 
-func TestUpdateBook_NotFound(t *testing.T) {
-	bookId := "2"
-	book := &model.Book{Title: "new_title", Genre: "new_genre"}
+			err := repo.UpdateBook(tt.book, tt.bookId)
+			if (err != nil) != tt.expectedError {
+				t.Fatalf("expected error: %v, got: %v", tt.expectedError, err)
+			}
 
-	mock.ExpectBegin()
-	mock.ExpectExec(regexp.QuoteMeta(
-		"UPDATE `books` SET `title`=?,`genre`=?,`updated_at`=? WHERE id = ?")).
-		WithArgs(book.Title, book.Genre, sqlmock.AnyArg(), bookId).
-		WillReturnError(errors.New("record not found"))
-	mock.ExpectRollback()
-
-	if err := repo.UpdateBook(book, bookId); err == nil {
-		t.Fatal("Expected an error but got none")
-	}
-
-	if err := mock.ExpectationsWereMet(); err != nil {
-		t.Errorf("Test Update Book Not Found: %v", err)
+			if err := mock.ExpectationsWereMet(); err != nil {
+				t.Errorf("Test %s: %v", tt.name, err)
+			}
+		})
 	}
 }
 
