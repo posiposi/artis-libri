@@ -14,7 +14,7 @@
     "format": "prettier --check ."
   },
   "dependencies": {
-    "@chakra-ui/react": "^3.2.1",
+    "@chakra-ui/react": "^3.8.0",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "framer-motion": "^11.12.0",
