@@ -57,7 +57,9 @@ const BookEditButton = (book: BookEditButtonProps) => {
           <DialogActionTrigger asChild>
             <Button variant="outline">Cancel</Button>
           </DialogActionTrigger>
-          <Button>Save</Button>
+          <Button type="submit" variant="outline" colorPalette="blue">
+            更新
+          </Button>
         </DialogFooter>
       </DialogContent>
     </DialogRoot>
