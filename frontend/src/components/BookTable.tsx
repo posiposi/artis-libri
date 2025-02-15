@@ -73,7 +73,7 @@ const BookTable = () => {
               <Table.Cell>{book.progressPercentage}%</Table.Cell>
               <Table.Cell>¥{Number(book.price).toLocaleString()}</Table.Cell>
               <Table.Cell>
-                <BookEditButton></BookEditButton>
+                <BookEditButton book={book} />
               </Table.Cell>
               <Table.Cell textAlign="end">
                 <BookDeleteButton
