@@ -12,12 +12,66 @@ import { useRef } from "react";
 import { Button, Input, Stack } from "@chakra-ui/react";
 import { Field } from "@/components/ui/field";
 import { Book } from "../../types/book";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 interface BookEditButtonProps {
   book: Book;
+  fetchBooks: () => void;
 }
 
-const BookEditButton = (book: BookEditButtonProps) => {
+// TODO typeを共通化する
+interface BookInput {
+  id: string;
+  title: string;
+  genre: string;
+  totalPage: string;
+  progressPage: string;
+  author: string;
+  publisher: string;
+  publishedAt: string;
+  price: string;
+}
+
+const BookEditButton: React.FC<BookEditButtonProps> = ({
+  book,
+  fetchBooks,
+}) => {
+  const { register, handleSubmit, reset } = useForm<BookInput>();
+  // 編集ボタン押下時イベント定義
+  const onEditSubmit: SubmitHandler<BookInput> = async (data) => {
+    // TODO 登録処理と同様のため共通化する
+    const publishedAtYear = new Date(data.publishedAt).getFullYear();
+    const totalPage = parseInt(data.totalPage);
+    const progressPage = parseInt(data.progressPage);
+    const price = parseInt(data.price);
+    const bookData: Book = {
+      ...data,
+      publishedAt: publishedAtYear,
+      totalPage: totalPage,
+      progressPage: progressPage,
+      price: price,
+    };
+
+    try {
+      const baseURL = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${baseURL}/v1/books/${book.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookData),
+      });
+      if (!response.ok) {
+        throw new Error("書籍の編集登録に失敗しました。");
+      }
+      alert("書籍情報を変更しました。");
+      reset();
+      fetchBooks();
+    } catch (error: unknown) {
+      alert(error);
+    }
+  };
+
   const ref = useRef<HTMLInputElement>(null);
   return (
     <DialogRoot initialFocusEl={() => ref.current}>
@@ -28,39 +82,61 @@ const BookEditButton = (book: BookEditButtonProps) => {
         <DialogHeader>
           <DialogTitle>書籍編集</DialogTitle>
         </DialogHeader>
-        <DialogBody pb="4">
-          <Stack gap="4">
-            <Field label="タイトル">
-              <Input ref={ref} placeholder={book.book.title} />
-            </Field>
-            <Field label="著者">
-              <Input placeholder={book.book.author} />
-            </Field>
-            <Field label="ジャンル">
-              <Input placeholder={book.book.genre} />
-            </Field>
-            <Field label="出版社">
-              <Input placeholder={book.book.publisher} />
-            </Field>
-            <Field label="出版年">
-              <Input placeholder={String(book.book.publishedAt)} />
-            </Field>
-            <Field label="総ページ数">
-              <Input placeholder={String(book.book.totalPage)} />
-            </Field>
-            <Field label="金額">
-              <Input placeholder={String(book.book.price)} />
-            </Field>
-          </Stack>
-        </DialogBody>
-        <DialogFooter>
-          <DialogActionTrigger asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogActionTrigger>
-          <Button type="submit" variant="outline" colorPalette="blue">
-            更新
-          </Button>
-        </DialogFooter>
+        <form onSubmit={handleSubmit(onEditSubmit)}>
+          <DialogBody pb="4">
+            <Stack gap="4">
+              <Field label="タイトル">
+                <Input placeholder={book.title} {...register("title")} />
+              </Field>
+              <Field label="著者">
+                <Input placeholder={book.author} {...register("author")} />
+              </Field>
+              <Field label="ジャンル">
+                <Input placeholder={book.genre} {...register("genre")} />
+              </Field>
+              <Field label="出版社">
+                <Input
+                  placeholder={book.publisher}
+                  {...register("publisher")}
+                />
+              </Field>
+              <Field label="出版年">
+                <Input
+                  placeholder={String(book.publishedAt)}
+                  {...register("publishedAt")}
+                />
+              </Field>
+              <Field label="総ページ数">
+                <Input
+                  placeholder={String(book.totalPage)}
+                  {...register("totalPage")}
+                />
+              </Field>
+              <Field label="現状ページ">
+                <Input
+                  placeholder={String(book.progressPage)}
+                  {...register("progressPage")}
+                />
+              </Field>
+              <Field label="金額">
+                <Input
+                  placeholder={String(book.price)}
+                  {...register("price")}
+                />
+              </Field>
+            </Stack>
+          </DialogBody>
+          <DialogFooter>
+            <DialogActionTrigger asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogActionTrigger>
+            <DialogActionTrigger asChild>
+              <Button type="submit" variant="outline" colorPalette="blue">
+                更新
+              </Button>
+            </DialogActionTrigger>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </DialogRoot>
   );
