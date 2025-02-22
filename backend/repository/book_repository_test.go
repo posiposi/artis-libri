@@ -1,7 +1,10 @@
 package repository
 
 import (
+	"database/sql"
 	"errors"
+	"fmt"
+	"os"
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
@@ -9,25 +12,39 @@ import (
 	"gorm.io/gorm"
 )
 
-func TestDeleteBook(t *testing.T) {
-	db, mock, err := sqlmock.New()
+var (
+	db     *sql.DB
+	mock   sqlmock.Sqlmock
+	gormDB *gorm.DB
+	repo   *bookRepository
+)
+
+func TestMain(m *testing.M) {
+	var err error
+	db, mock, err = sqlmock.New()
 	if err != nil {
-		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
+		fmt.Printf("an error '%s' was not expected when opening a stub database connection", err)
+		os.Exit(1)
 	}
 	defer db.Close()
 
 	dsn := "sqlmock_db_0"
-	gormDB, err := gorm.Open(mysql.New(mysql.Config{
+	gormDB, err = gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,
 		SkipInitializeWithVersion: true,
 		Conn:                      db,
 	}), &gorm.Config{})
 	if err != nil {
-		t.Fatalf("failed to open gorm DB: %v", err)
+		fmt.Printf("failed to open gorm DB: %v", err)
+		os.Exit(1)
 	}
+	repo = &bookRepository{db: gormDB}
 
-	repo := &bookRepository{db: gormDB}
+	code := m.Run()
+	os.Exit(code)
+}
 
+func TestDeleteBook(t *testing.T) {
 	t.Run("successfully delete book", func(t *testing.T) {
 		bookId := "1"
 		mock.ExpectExec("DELETE FROM `books` WHERE id = ?").
