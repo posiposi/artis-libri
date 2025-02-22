@@ -14,7 +14,8 @@ model User {
   created_at DateTime  @default(now())
   updated_at DateTime?
 
-  book       Reading[]
+  // TODO 要bookとのリレーション
+  book Reading[]
 
   @@map("users")
 }
@@ -27,26 +28,27 @@ model Book {
   author       String    @default("")
   publisher    String    @default("")
   published_at Int       @db.Year
-  price        Decimal   @db.Decimal(10, 2) @default(0)
+  price        Decimal   @default(0) @db.Decimal(10, 2)
   created_at   DateTime  @default(now())
   updated_at   DateTime?
 
-  user         Reading[]
-  
+  // TODO 要userとのリレーション
+  user Reading[]
+
   @@map("books")
 }
 
 model Reading {
-  user_id          String    @db.Char(36)
-  book_id          String    @db.Char(36)
-  progress_page    Int       @default(0)
-  review           String?
-  created_at       DateTime  @default(now())
-  updated_at       DateTime?
+  user_id       String    @db.Char(36)
+  book_id       String    @db.Char(36)
+  progress_page Int       @default(0)
+  review        String?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime?
 
-  user             User      @relation(fields: [user_id], references: [id])
-  book             Book      @relation(fields: [book_id], references: [id])
+  book Book  @relation(fields: [book_id], references: [id])
+  User User? @relation(fields: [user_id], references: [id])
 
-  @@id([user_id, book_id])
+  @@id([book_id, user_id])
   @@map("readings")
 }

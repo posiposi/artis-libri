@@ -86,41 +86,41 @@ const BookEditButton: React.FC<BookEditButtonProps> = ({
           <DialogBody pb="4">
             <Stack gap="4">
               <Field label="タイトル">
-                <Input placeholder={book.title} {...register("title")} />
+                <Input defaultValue={book.title} {...register("title")} />
               </Field>
               <Field label="著者">
-                <Input placeholder={book.author} {...register("author")} />
+                <Input defaultValue={book.author} {...register("author")} />
               </Field>
               <Field label="ジャンル">
-                <Input placeholder={book.genre} {...register("genre")} />
+                <Input defaultValue={book.genre} {...register("genre")} />
               </Field>
               <Field label="出版社">
                 <Input
-                  placeholder={book.publisher}
+                  defaultValue={book.publisher}
                   {...register("publisher")}
                 />
               </Field>
               <Field label="出版年">
                 <Input
-                  placeholder={String(book.publishedAt)}
+                  defaultValue={String(book.publishedAt)}
                   {...register("publishedAt")}
                 />
               </Field>
               <Field label="総ページ数">
                 <Input
-                  placeholder={String(book.totalPage)}
+                  defaultValue={String(book.totalPage)}
                   {...register("totalPage")}
                 />
               </Field>
               <Field label="現状ページ">
                 <Input
-                  placeholder={String(book.progressPage)}
+                  defaultValue={String(book.progressPage)}
                   {...register("progressPage")}
                 />
               </Field>
               <Field label="金額">
                 <Input
-                  placeholder={String(book.price)}
+                  defaultValue={String(book.price)}
                   {...register("price")}
                 />
               </Field>

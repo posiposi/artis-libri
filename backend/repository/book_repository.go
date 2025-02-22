@@ -2,6 +2,7 @@ package repository
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/posiposi/project/backend/model"
@@ -53,9 +54,31 @@ func (br *bookRepository) CreateBook(book *model.Book) error {
 }
 
 func (br *bookRepository) UpdateBook(book *model.Book, bookId string) error {
-	result := br.db.Model(book).Where("id = ?", bookId).Updates(book)
+	result := br.db.Model(&book).Where("id = ?", bookId).Updates(map[string]interface{}{
+		"title":        book.Title,
+		"genre":        book.Genre,
+		"total_page":   book.TotalPage,
+		"price":        book.Price,
+		"author":       book.Author,
+		"publisher":    book.Publisher,
+		"published_at": book.PublishedAt,
+	})
+	// userIDはuser振り分けを実装するまでは暫定的に固定値とする
+	// reviewについても感想登録機能実装までは""固定値とする
+	reading_result := br.db.Save(&model.Reading{
+		BookId:       bookId,
+		UserId:       "user_1",
+		ProgressPage: book.ProgressPage,
+		Review:       "",
+		CreatedAt:    time.Now(),
+		UpdatedAt:    time.Now(),
+	})
+
 	if result.Error != nil {
 		return result.Error
+	}
+	if reading_result.Error != nil {
+		return reading_result.Error
 	}
 	if result.RowsAffected < 1 {
 		return fmt.Errorf("object is not exist")

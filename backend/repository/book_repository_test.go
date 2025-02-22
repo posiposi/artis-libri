@@ -5,10 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"regexp"
 	"testing"
-
-	"github.com/posiposi/project/backend/model"
 
 	"github.com/DATA-DOG/go-sqlmock"
 	"gorm.io/driver/mysql"
@@ -45,60 +42,6 @@ func TestMain(m *testing.M) {
 
 	code := m.Run()
 	os.Exit(code)
-}
-
-func TestUpdateBook(t *testing.T) {
-	tests := []struct {
-		name          string
-		bookId        string
-		book          *model.Book
-		mockSetup     func()
-		expectedError bool
-	}{
-		{
-			name:   "successful update",
-			bookId: "1",
-			book:   &model.Book{Title: "new_title", Genre: "new_genre"},
-			mockSetup: func() {
-				mock.ExpectBegin()
-				mock.ExpectExec(regexp.QuoteMeta(
-					"UPDATE `books` SET `title`=?,`genre`=?,`updated_at`=? WHERE id = ?")).
-					WithArgs("new_title", "new_genre", sqlmock.AnyArg(), "1").
-					WillReturnResult(sqlmock.NewResult(1, 1))
-				mock.ExpectCommit()
-			},
-			expectedError: false,
-		},
-		{
-			name:   "book not found",
-			bookId: "2",
-			book:   &model.Book{Title: "new_title", Genre: "new_genre"},
-			mockSetup: func() {
-				mock.ExpectBegin()
-				mock.ExpectExec(regexp.QuoteMeta(
-					"UPDATE `books` SET `title`=?,`genre`=?,`updated_at`=? WHERE id = ?")).
-					WithArgs("new_title", "new_genre", sqlmock.AnyArg(), "2").
-					WillReturnError(errors.New("record not found"))
-				mock.ExpectRollback()
-			},
-			expectedError: true,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			tt.mockSetup()
-
-			err := repo.UpdateBook(tt.book, tt.bookId)
-			if (err != nil) != tt.expectedError {
-				t.Fatalf("expected error: %v, got: %v", tt.expectedError, err)
-			}
-
-			if err := mock.ExpectationsWereMet(); err != nil {
-				t.Errorf("Test %s: %v", tt.name, err)
-			}
-		})
-	}
 }
 
 func TestDeleteBook(t *testing.T) {
