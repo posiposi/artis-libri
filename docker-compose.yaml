@@ -65,6 +65,36 @@ services:
     ports:
       - "4010:4010"
 
+  schemaspy:
+    image: schemaspy/schemaspy:snapshot
+    depends_on:
+      - db
+    volumes:
+      - ./schemaspy/output:/output
+    networks:
+      - app_network
+    # .envを参照するためschemaspy.propertiesは使用しない
+    command: >
+      java -jar schemaspy.jar
+      - vizjs
+      -t mysql
+      -dp mysql-connector-java.jar
+      -host db
+      -port ${MYSQL_PORT}
+      -db ${MYSQL_DATABASE}
+      -u ${MYSQL_USER}
+      -p ${MYSQL_PASSWORD}
+      -s ${MYSQL_DATABASE}
+
+  schemaspy_nginx:
+    image: nginx
+    depends_on:
+      - schemaspy
+    ports:
+      - 8088:80
+    volumes:
+      - ./schemaspy/output:/usr/share/nginx/html:ro
+
 volumes:
   mysql_data:
 
