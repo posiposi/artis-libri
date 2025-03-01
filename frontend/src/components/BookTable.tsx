@@ -6,6 +6,8 @@ import BookEditButton from "./BookEditButton";
 import BookDeleteButton from "./BookDeleteButton";
 import { getBooks } from "../utils/getBooks";
 import BookRegisterDialog from "../components/BookRegisterDialog";
+import ProgressAndReviewCard from "@/components/ProgressAndReviewCard";
+import progressPercentageContext from "@/components/contexts/progressPercentageContext";
 
 const BookTable = () => {
   const [books, setBooks] = useState<Book[]>([]);
@@ -57,6 +59,7 @@ const BookTable = () => {
             <Table.ColumnHeader>進捗率</Table.ColumnHeader>
             <Table.ColumnHeader>金額</Table.ColumnHeader>
             <Table.ColumnHeader></Table.ColumnHeader>
+            <Table.ColumnHeader></Table.ColumnHeader>
             <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
@@ -74,6 +77,13 @@ const BookTable = () => {
               <Table.Cell>¥{Number(book.price).toLocaleString()}</Table.Cell>
               <Table.Cell>
                 <BookEditButton book={book} fetchBooks={fetchBooks} />
+              </Table.Cell>
+              <Table.Cell>
+                <progressPercentageContext.Provider
+                  value={book.progressPercentage ?? 0}
+                >
+                  <ProgressAndReviewCard />
+                </progressPercentageContext.Provider>
               </Table.Cell>
               <Table.Cell textAlign="end">
                 <BookDeleteButton
