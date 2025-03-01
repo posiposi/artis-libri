@@ -10,6 +10,7 @@ import {
   DialogRoot,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { MdOutlineRateReview } from "react-icons/md";
 import { useState } from "react";
 import ProgressPercentageGuage from "./ProgressPercentageGuage";
 
@@ -18,9 +19,11 @@ const ProgressAndReviewCard = () => {
   return (
     <DialogRoot lazyMount open={open} onOpenChange={(e) => setOpen(e.open)}>
       <DialogTrigger asChild>
-        <Button variant="outline">Review</Button>
+        <Button variant="outline">
+          <MdOutlineRateReview />
+          Review
+        </Button>
       </DialogTrigger>
-
       <DialogContent>
         <DialogHeader>
           <DialogTitle>感想</DialogTitle>
