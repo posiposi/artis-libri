@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
-	"github.com/posiposi/project/backend/model"
+	"github.com/posiposi/project/backend/infrastructure/model"
 	"github.com/posiposi/project/backend/usecase"
 )
 

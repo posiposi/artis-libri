@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/posiposi/project/backend/model"
+	"github.com/posiposi/project/backend/infrastructure/model"
 	"gorm.io/gorm"
 )
 

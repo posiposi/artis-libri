@@ -1,8 +1,8 @@
 package usecase
 
 import (
+	"github.com/posiposi/project/backend/infrastructure/model"
 	"github.com/posiposi/project/backend/infrastructure/openai"
-	"github.com/posiposi/project/backend/model"
 	"github.com/posiposi/project/backend/repository"
 )
 

@@ -3,8 +3,8 @@ package usecase
 import (
 	"testing"
 
+	"github.com/posiposi/project/backend/infrastructure/model"
 	"github.com/posiposi/project/backend/infrastructure/openai"
-	"github.com/posiposi/project/backend/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

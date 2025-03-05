@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/posiposi/project/backend/db"
-	"github.com/posiposi/project/backend/model"
+	"github.com/posiposi/project/backend/infrastructure/model"
 )
 
 func main() {
