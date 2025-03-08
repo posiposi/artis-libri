@@ -26,7 +26,7 @@ func NewBookRepository(db *gorm.DB) IBookRepository {
 }
 
 func (br *bookRepository) GetAllBooks(books *[]model.Book) error {
-	if err := br.db.Select("books.*, readings.progress_page, readings.review").
+	if err := br.db.Select("books.*, readings.progress_page").
 		Order("created_at").
 		Joins("left join readings on readings.book_id = books.id").
 		Find(books).Error; err != nil {
@@ -69,7 +69,6 @@ func (br *bookRepository) UpdateBook(book *model.Book, bookId string) error {
 		BookId:       bookId,
 		UserId:       "user_1",
 		ProgressPage: book.ProgressPage,
-		Review:       "",
 		CreatedAt:    time.Now(),
 		UpdatedAt:    time.Now(),
 	})
